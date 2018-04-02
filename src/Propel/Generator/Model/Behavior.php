@@ -13,6 +13,7 @@ namespace Propel\Generator\Model;
 use Propel\Generator\Builder\Om\ActiveRecordTraitBuilder;
 use Propel\Generator\Builder\Om\EntityMapBuilder;
 use Propel\Generator\Builder\Om\ObjectBuilder;
+use Propel\Generator\Builder\Om\ObjectTraitBuilder;
 use Propel\Generator\Builder\Om\QueryBuilder;
 use Propel\Generator\Builder\Om\RepositoryBuilder;
 use Propel\Generator\Builder\Util\PropelTemplate;
@@ -414,6 +415,16 @@ class Behavior extends MappingModel
     }
 
     /**
+     * Hook to change ObjectTraitBuilder instance. Overwrite it and modify $builder if you want.
+     *
+     * @param ObjectTraitBuilder $builder
+     */
+    public function objectTraitBuilderModification(ObjectTraitBuilder $builder)
+    {
+
+    }
+
+    /**
      * Hook to change QueryBuilder instance. Overwrite it and modify $builder if you want.
      *
      * @param QueryBuilder $builder
@@ -473,6 +484,18 @@ class Behavior extends MappingModel
      * @return $this|Behavior
      */
     public function getObjectBuilderModifier()
+    {
+        return $this;
+    }
+
+    /**
+     * Returns the object trait builder modifier object.
+     *
+     * The current object is returned by default.
+     *
+     * @return $this|Behavior
+     */
+    public function getObjectTraitBuilderModifier()
     {
         return $this;
     }

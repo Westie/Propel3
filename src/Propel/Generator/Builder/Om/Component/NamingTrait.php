@@ -12,6 +12,7 @@ use Propel\Generator\Model\Entity;
  * This trait provides some useful getters for php class names from various builders.
  *
  * @author Marc J. Schmidt <marc@marcjschmidt.de>
+ * @author David Weston <westie@typefish.co.uk>
  */
 trait NamingTrait
 {
@@ -255,6 +256,18 @@ trait NamingTrait
     public function getActiveRecordTraitName($fqcn = false)
     {
         return $this->getClassNameFromBuilder($this->getBuilder()->getActiveRecordTraitBuilder(), $fqcn);
+    }
+
+    /**
+     * Returns the ObjectTrait name.
+     *
+     * @param bool $fqcn
+     *
+     * @return string
+     */
+    public function getObjectTraitName($fqcn = false)
+    {
+        return $this->getClassNameFromBuilder($this->getBuilder()->getObjectTraitBuilder(), $fqcn);
     }
 
     /**

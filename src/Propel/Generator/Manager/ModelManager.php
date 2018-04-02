@@ -17,6 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * This manager creates the Object Model classes based on the XML schema file.
  *
  * @author Hans Lellelid <hans@xmpl.org>
+ * @author David Weston <westie@typefish.co.uk>
  */
 class ModelManager extends AbstractManager
 {
@@ -63,9 +64,27 @@ class ModelManager extends AbstractManager
                         // -----------------------------------------------------------------------------------------
 
                         // these files are always created / overwrite any existing files
-                        foreach (array('activerecordtrait', 'proxy', 'object', 'entitymap', 'query', 'repository') as $target) {
+                        foreach (array('activerecordtrait', 'proxy', 'entitymap', 'query', 'repository') as $target) {
                             $builder = $generatorConfig->getConfiguredBuilder($entity, $target);
                             $nbWrittenFiles += $this->doBuild($builder);
+                        }
+                        
+                        // -----------------------------------------------------------------------------------------
+                        // Place generated object code either in an overwritable trait or overwritable class
+                        // -----------------------------------------------------------------------------------------
+                        
+                        $overwrite = !$entity->isTraitable();
+                        
+                        foreach (array('object') as $target) {
+                            $builder = $generatorConfig->getConfiguredBuilder($entity, $target);
+                            $nbWrittenFiles += $this->doBuild($builder, $overwrite);
+                        }
+                        
+                        if ($entity->isTraitable()) {
+                            foreach (array('objecttrait') as $target) {
+                                $builder = $generatorConfig->getConfiguredBuilder($entity, $target);
+                                $nbWrittenFiles += $this->doBuild($builder);
+                            }
                         }
 
                         // -----------------------------------------------------------------------------------------

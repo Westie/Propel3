@@ -37,3 +37,11 @@ tests/migrationdiff/
 tests/reversecommand/
 
 tests/latest_quickbuilder_sqlite.db
+
+app/
+
+propel\.yml
+
+propel\.yml\.dist
+
+schema\.xml

@@ -390,6 +390,7 @@ class PropelConfiguration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('object')->cannotBeEmpty()->defaultValue('\Propel\Generator\Builder\Om\ObjectBuilder')->end()
+                                        ->scalarNode('objecttrait')->cannotBeEmpty()->defaultValue('\Propel\Generator\Builder\Om\ObjectTraitBuilder')->end()
                                         ->scalarNode('activerecordtrait')->cannotBeEmpty()->defaultValue('\Propel\Generator\Builder\Om\ActiveRecordTraitBuilder')->end()
                                         ->scalarNode('objectmultiextend')->cannotBeEmpty()->defaultValue('\Propel\Generator\Builder\Om\MultiExtendObjectBuilder')->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->defaultValue('\Propel\Generator\Builder\Om\RepositoryBuilder')->end()

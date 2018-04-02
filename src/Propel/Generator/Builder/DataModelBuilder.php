@@ -13,21 +13,22 @@ namespace Propel\Generator\Builder;
 use Propel\Common\Pluralizer\PluralizerInterface;
 use Propel\Generator\Builder\Om\AbstractBuilder;
 use Propel\Generator\Builder\Om\ActiveRecordTraitBuilder;
+use Propel\Generator\Builder\Om\EntityMapBuilder;
 use Propel\Generator\Builder\Om\MultiExtendBuilder;
 use Propel\Generator\Builder\Om\MultiExtendObjectBuilder;
 use Propel\Generator\Builder\Om\ObjectBuilder;
+use Propel\Generator\Builder\Om\ObjectTraitBuilder;
 use Propel\Generator\Builder\Om\ProxyBuilder;
 use Propel\Generator\Builder\Om\QueryBuilder;
 use Propel\Generator\Builder\Om\QueryInheritanceBuilder;
 use Propel\Generator\Builder\Om\RepositoryBuilder;
-use Propel\Generator\Builder\Om\EntityMapBuilder;
 use Propel\Generator\Builder\Om\StubQueryBuilder;
 use Propel\Generator\Builder\Om\StubQueryInheritanceBuilder;
 use Propel\Generator\Builder\Om\StubRepositoryBuilder;
 use Propel\Generator\Config\GeneratorConfigInterface;
 use Propel\Generator\Model\Database;
-use Propel\Generator\Model\Inheritance;
 use Propel\Generator\Model\Entity;
+use Propel\Generator\Model\Inheritance;
 use Propel\Generator\Platform\PlatformInterface;
 
 /**
@@ -42,6 +43,7 @@ use Propel\Generator\Platform\PlatformInterface;
  * anyway.
  *
  * @author Hans Lellelid <hans@xmpl.org>
+ * @author David Weston <westie@typefish.co.uk>
  */
 abstract class DataModelBuilder
 {
@@ -87,6 +89,13 @@ abstract class DataModelBuilder
      * @var DataModelBuilder
      */
     private $activeRecordTraitBuilder;
+
+    /**
+     * Object trait builder class for current entity.
+     *
+     * @var DataModelBuilder
+     */
+    private $objectTraitBuilder;
 
     /**
      * Query builder class for current entity.
@@ -209,6 +218,23 @@ abstract class DataModelBuilder
         }
 
         return $this->activeRecordTraitBuilder;
+    }
+
+    /**
+     * Returns new or existing object trait builder class for this entity.
+     *
+     * @return ObjectTraitBuilder
+     */
+    public function getObjectTraitBuilder()
+    {
+        if (!isset($this->objectTraitBuilder)) {
+            $this->objectTraitBuilder = $this->getGeneratorConfig()->getConfiguredBuilder(
+                $this->getEntity(),
+                'objecttrait'
+            );
+        }
+
+        return $this->objectTraitBuilder;
     }
 
     /**

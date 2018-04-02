@@ -20,6 +20,7 @@ use Propel\Generator\Builder\Om\Component\NamingTrait;
  * all the accessor and setter methods as well as fields as class properties.
  *
  * @author Marc J. Schmidt <marc@marcjschmidt.de>
+ * @author David Weston <westie@typefish.co.uk>
  */
 class ObjectBuilder extends AbstractBuilder
 {
@@ -27,13 +28,26 @@ class ObjectBuilder extends AbstractBuilder
 
     public function buildClass()
     {
-        //todo, make it depending on <entity activeRecord="true">
-        $this->getDefinition()->declareUse($this->getActiveRecordTraitName(true));
-
         if ($this->getEntity()->isActiveRecord()) {
+            $this->getDefinition()->declareUse($this->getActiveRecordTraitName(true));
             $this->getDefinition()->addTrait($this->getActiveRecordTraitName());
         }
 
+        if ($this->getEntity()->isTraitable()) {
+            $this->getDefinition()->declareUse($this->getObjectTraitName(true));
+            $this->getDefinition()->addTrait($this->getObjectTraitName());
+            
+            if (!$this->getDefinition()->getDescription())
+                $this->getDefinition()->setDescription('Generated code for model is located within the '.$this->getObjectTraitName().' trait');
+        }
+
+        if (!$this->getEntity()->isTraitable()) {
+            $this->applyComponents();
+        }
+    }
+    
+    protected function applyComponents()
+    {
         $this->applyComponent('Object\\Properties');
         $this->applyComponent('Object\\MagicToStringMethod');
         $this->applyComponent('Object\\RelationProperties');

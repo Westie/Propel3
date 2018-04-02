@@ -115,6 +115,7 @@ class Entity extends ScopedMappingModel implements IdMethod
     /**
      * @var bool|null
      */
+    private $traitable;
     private $activeRecord;
 
     private $forReferenceOnly;
@@ -162,6 +163,7 @@ class Entity extends ScopedMappingModel implements IdMethod
         $this->isAbstract = false;
         $this->isCrossRef = false;
         $this->readOnly = false;
+        $this->traitable = false;
         $this->reloadOnInsert = false;
         $this->reloadOnUpdate = false;
         $this->skipSql = false;
@@ -210,7 +212,8 @@ class Entity extends ScopedMappingModel implements IdMethod
 
         $this->skipSql = $this->booleanValue($this->getAttribute('skipSql'));
         $this->readOnly = $this->booleanValue($this->getAttribute('readOnly'));
-
+        
+        $this->traitable = $this->booleanValue($this->getAttribute('traitable'));
         $this->isAbstract = $this->booleanValue($this->getAttribute('abstract'));
         $this->baseClass = $this->getAttribute('baseClass');
         $this->alias = $this->getAttribute('alias');
@@ -1200,6 +1203,27 @@ class Entity extends ScopedMappingModel implements IdMethod
     public function setReadOnly($flag = true)
     {
         $this->readOnly = (boolean)$flag;
+    }
+
+    /**
+     * Determines whether or not the entity in question has its generated code
+     * placed into a trait.
+     *
+     * @return boolean
+     */
+    public function isTraitable()
+    {
+        return $this->traitable;
+    }
+
+    /**
+     * Mark this entity as being able to have generated code placed into a trait.
+     *
+     * @param boolean $flag True by default
+     */
+    public function setTraitable($flag = true)
+    {
+        $this->traitable = (boolean) $flag;
     }
 
     /**
